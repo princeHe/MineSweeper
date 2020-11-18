@@ -5,13 +5,13 @@
     android:orientation="vertical">
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/tv_confirm"
+        android:id="@+id/tv_clear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp"
         android:drawablePadding="8dp"
-        android:drawableStart="@drawable/ic_confirm"
-        android:text="确认"/>
+        android:drawableStart="@drawable/ic_clear"
+        android:text="清除标记"/>
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tv_flag"
@@ -23,12 +23,12 @@
         android:text="标记为雷"/>
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/tv_question"
+        android:id="@+id/tv_doubt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp"
         android:drawablePadding="8dp"
-        android:drawableStart="@drawable/ic_question"
+        android:drawableStart="@drawable/ic_doubt"
         android:text="不确定"/>
 
 </LinearLayout>

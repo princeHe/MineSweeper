@@ -8,10 +8,12 @@ import androidx.fragment.app.DialogFragment
 import com.he.minesweeper.databinding.DialogOperationBinding
 
 class OperateDialog(
-    private val confirmListener: () -> Unit,
-    private val flagListener: () -> Unit,
-    private val questionListener: () -> Unit
+    private val clearListener: (Int) -> Unit,
+    private val flagListener: (Int) -> Unit,
+    private val doubtListener: (Int) -> Unit
 ) : DialogFragment() {
+
+    var index = 0
 
     private lateinit var binding: DialogOperationBinding
 
@@ -27,16 +29,16 @@ class OperateDialog(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         with(binding) {
-            tvConfirm.setOnClickListener {
-                confirmListener()
+            tvClear.setOnClickListener {
+                clearListener(index)
                 dismissAllowingStateLoss()
             }
             tvFlag.setOnClickListener {
-                flagListener()
+                flagListener(index)
                 dismissAllowingStateLoss()
             }
-            tvQuestion.setOnClickListener {
-                questionListener()
+            tvDoubt.setOnClickListener {
+                doubtListener(index)
                 dismissAllowingStateLoss()
             }
         }
@@ -44,8 +46,8 @@ class OperateDialog(
 
     companion object {
         fun newInstance(
-            confirmListener: () -> Unit, flagListener: () -> Unit, questionListener: () -> Unit
-        ) = OperateDialog(confirmListener, flagListener, questionListener)
+            clearListener: (Int) -> Unit, flagListener: (Int) -> Unit, doubtListener: (Int) -> Unit
+        ) = OperateDialog(clearListener, flagListener, doubtListener)
     }
 
 }

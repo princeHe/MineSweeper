@@ -6,8 +6,7 @@ data class Grid(
         val index: Int,
         val landCountAround: Int = 0,
         val isLandMine: Boolean = false,
-        val isClickOn: Boolean = false,
-        val isFlag: Boolean = false
+        val status: GridStatus = GridStatus.NORMAL
 ) {
     companion object {
         val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Grid>() {

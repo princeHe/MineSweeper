@@ -12,8 +12,6 @@ class MainViewModel : ViewModel() {
         const val landmineCount = 99
     }
 
-    var index = 0
-
     private val landmines by lazy {
         val result = mutableSetOf<Int>()
         do {
@@ -47,19 +45,38 @@ class MainViewModel : ViewModel() {
         }
     )
 
-    fun confirm() {
+    fun reset() {
+
+    }
+
+    fun confirm(index: Int) {
+        //确定扫除一个的时候需要自动
         grids.value = grids.value!!.toMutableList()
             .also {
-                it[index] = it[index].copy(isClickOn = true)
+                it[index] = it[index].copy(status = GridStatus.CONFIRM)
+
             }
     }
 
-    fun flag() {
-
+    fun clear(index: Int) {
+        grids.value = grids.value!!.toMutableList()
+            .also {
+                it[index] = it[index].copy(status = GridStatus.NORMAL)
+            }
     }
 
-    fun question() {
+    fun flag(index: Int) {
+        grids.value = grids.value!!.toMutableList()
+            .also {
+                it[index] = it[index].copy(status = GridStatus.FLAG)
+            }
+    }
 
+    fun doubt(index: Int) {
+        grids.value = grids.value!!.toMutableList()
+            .also {
+                it[index] = it[index].copy(status = GridStatus.DOUBT)
+            }
     }
 
 }
