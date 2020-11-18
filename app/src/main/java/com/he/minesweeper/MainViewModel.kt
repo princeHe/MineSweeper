@@ -79,4 +79,9 @@ class MainViewModel : ViewModel() {
             }
     }
 
+    //可能是这个小游戏最有意思的一个方法了
+    private fun autoScan(index: Int) {
+
+    }
+
 }
