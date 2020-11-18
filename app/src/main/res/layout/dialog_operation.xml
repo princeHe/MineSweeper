@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:drawablePadding="8dp"
+        android:drawableStart="@drawable/ic_confirm"
+        android:text="确认"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_flag"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:drawablePadding="8dp"
+        android:drawableStart="@drawable/ic_flag"
+        android:text="标记为雷"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_question"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:drawablePadding="8dp"
+        android:drawableStart="@drawable/ic_question"
+        android:text="不确定"/>
+
+</LinearLayout>
