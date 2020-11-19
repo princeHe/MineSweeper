@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlin.random.Random
 
-class MainViewModel(private val difficultyMode: DifficultyMode) : ViewModel() {
+class MainViewModel(val difficultyMode: DifficultyMode) : ViewModel() {
 
     private val landmines by lazy {
         val result = mutableSetOf<Int>()

@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.recyclerView.adapter = adapter
-        binding.recyclerView.layoutManager = GridLayoutManager(this, 16)
+        binding.recyclerView.layoutManager = GridLayoutManager(this, viewModel.difficultyMode.columnCount)
 
         viewModel.grids.observe(this) {
             adapter.submitList(it)
