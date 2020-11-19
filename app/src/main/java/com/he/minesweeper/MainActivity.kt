@@ -61,6 +61,19 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.grids.observe(this) {
             adapter.submitList(it)
+            if (viewModel.success) {
+                AlertDialog.Builder(this)
+                    .setMessage("恭喜您！")
+                    .setPositiveButton("再来一局") { _, _ ->
+                        viewModel.reset()
+                    }
+                    .setNegativeButton("退出") { _, _ ->
+                        finish()
+                    }
+                    .setCancelable(false)
+                    .create()
+                    .show()
+            }
         }
     }
 

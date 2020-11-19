@@ -40,6 +40,10 @@ class MainViewModel(private val difficultyMode: DifficultyMode) : ViewModel() {
             Grid(index = it, isLandMine = it in landmines, landCountAround = aroundCount)
         }
 
+    val success get() = grids.value!!.count {
+        !it.isLandMine && it.status == GridStatus.CONFIRM
+    } == difficultyMode.columnCount * difficultyMode.rowCount - difficultyMode.landmineCount
+
     fun reset() {
         grids.value = generateGrids()
     }
