@@ -35,12 +35,12 @@ class GridAdapter(
                     true
                 }
                 textView.text = if (
-                    item.status == GridStatus.CONFIRM && !item.isLandMine && item.landCountAround != 0
+                    item.status == GridStatus.CONFIRM && !item.isLandmine && item.landCountAround != 0
                 ) item.landCountAround.toString() else ""
                 appCompatImageView.setImageResource(
                     when (item.status) {
                         GridStatus.NORMAL -> 0
-                        GridStatus.CONFIRM -> if (item.isLandMine) R.drawable.ic_landmine else 0
+                        GridStatus.CONFIRM -> if (item.isLandmine) R.drawable.ic_landmine else 0
                         GridStatus.FLAG -> R.drawable.ic_flag
                         GridStatus.DOUBT -> R.drawable.ic_doubt
                     }

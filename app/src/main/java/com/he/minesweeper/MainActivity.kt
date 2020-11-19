@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
     })
 
     private val adapter = GridAdapter({ index ->
-        if (viewModel.grids.value!![index].isLandMine) {
+        if (viewModel.grids.value!![index].isLandmine) {
             AlertDialog.Builder(this)
                 .setMessage("祝你下次好运")
                 .setPositiveButton("再来一局") { _, _ ->

@@ -3,10 +3,10 @@ package com.he.minesweeper
 import androidx.recyclerview.widget.DiffUtil
 
 data class Grid(
-        val index: Int,
-        val landCountAround: Int = 0,
-        val isLandMine: Boolean = false,
-        val status: GridStatus = GridStatus.NORMAL
+    val index: Int,
+    val landCountAround: Int = 0,
+    val isLandmine: Boolean = false,
+    val status: GridStatus = GridStatus.NORMAL
 ) {
     companion object {
         val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Grid>() {

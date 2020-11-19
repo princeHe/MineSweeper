@@ -37,11 +37,11 @@ class MainViewModel(private val difficultyMode: DifficultyMode) : ViewModel() {
             if (rowIndex + 1 < difficultyMode.rowCount && it + difficultyMode.columnCount in landmines) ++aroundCount
             //bottom right
             if (rowIndex + 1 < difficultyMode.rowCount && columnIndex + 1 < difficultyMode.columnCount && it + difficultyMode.columnCount + 1 in landmines) ++aroundCount
-            Grid(index = it, isLandMine = it in landmines, landCountAround = aroundCount)
+            Grid(index = it, isLandmine = it in landmines, landCountAround = aroundCount)
         }
 
     val success get() = grids.value!!.count {
-        !it.isLandMine && it.status == GridStatus.CONFIRM
+        !it.isLandmine && it.status == GridStatus.CONFIRM
     } == difficultyMode.columnCount * difficultyMode.rowCount - difficultyMode.landmineCount
 
     fun reset() {
