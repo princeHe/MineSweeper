@@ -45,7 +45,7 @@ class MainViewModel(private val difficultyMode: DifficultyMode) : ViewModel() {
     }
 
     fun confirm(index: Int) {
-        //确定扫除一个的时候需要自动
+        //确定扫除一个的时候需要自动点开周围雷数量为0的
         if (grids.value!![index].landCountAround == 0) {
             autoScan(index)
         } else {
