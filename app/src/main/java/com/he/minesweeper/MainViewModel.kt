@@ -6,18 +6,16 @@ import kotlin.random.Random
 
 class MainViewModel(val difficultyMode: DifficultyMode) : ViewModel() {
 
-    private val landmines by lazy {
-        val result = mutableSetOf<Int>()
-        do {
-            result.add(Random.nextInt(difficultyMode.rowCount * difficultyMode.columnCount))
-        } while (result.size < difficultyMode.landmineCount)
-        result
-    }
+    private val landmines = mutableSetOf<Int>()
 
     val grids = MutableLiveData(generateGrids())
 
-    private fun generateGrids() =
-        (0 until difficultyMode.rowCount * difficultyMode.columnCount).map {
+    private fun generateGrids(): List<Grid> {
+        landmines.clear()
+        do {
+            landmines.add(Random.nextInt(difficultyMode.rowCount * difficultyMode.columnCount))
+        } while (landmines.size < difficultyMode.landmineCount)
+        return (0 until difficultyMode.rowCount * difficultyMode.columnCount).map {
             val rowIndex = it / difficultyMode.columnCount
             val columnIndex = it % difficultyMode.columnCount
             var aroundCount = 0
@@ -39,6 +37,7 @@ class MainViewModel(val difficultyMode: DifficultyMode) : ViewModel() {
             if (rowIndex + 1 < difficultyMode.rowCount && columnIndex + 1 < difficultyMode.columnCount && it + difficultyMode.columnCount + 1 in landmines) ++aroundCount
             Grid(index = it, isLandmine = it in landmines, landCountAround = aroundCount)
         }
+    }
 
     val success get() = grids.value!!.count {
         !it.isLandmine && it.status == GridStatus.CONFIRM
