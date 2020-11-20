@@ -6,12 +6,10 @@ import kotlin.random.Random
 
 class MainViewModel(val difficultyMode: DifficultyMode) : ViewModel() {
 
-    private val landmines = mutableSetOf<Int>()
-
     val grids = MutableLiveData(generateGrids())
 
     private fun generateGrids(): List<Grid> {
-        landmines.clear()
+        val landmines = mutableSetOf<Int>()
         do {
             landmines.add(Random.nextInt(difficultyMode.rowCount * difficultyMode.columnCount))
         } while (landmines.size < difficultyMode.landmineCount)
