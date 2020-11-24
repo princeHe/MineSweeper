@@ -13,27 +13,8 @@ class MainViewModel(val difficultyMode: DifficultyMode) : ViewModel() {
         do {
             landmines.add(Random.nextInt(difficultyMode.rowCount * difficultyMode.columnCount))
         } while (landmines.size < difficultyMode.landmineCount)
-        return (0 until difficultyMode.rowCount * difficultyMode.columnCount).map {
-            val rowIndex = it / difficultyMode.columnCount
-            val columnIndex = it % difficultyMode.columnCount
-            var aroundCount = 0
-            //top left
-            if (rowIndex > 0 && columnIndex > 0 && it - difficultyMode.columnCount - 1 in landmines) ++aroundCount
-            //top
-            if (rowIndex > 0 && it - difficultyMode.columnCount in landmines) ++aroundCount
-            //top right
-            if (rowIndex > 0 && columnIndex + 1 < difficultyMode.columnCount && it - difficultyMode.columnCount + 1 in landmines) ++aroundCount
-            //left
-            if (columnIndex > 0 && it - 1 in landmines) ++aroundCount
-            //right
-            if (columnIndex + 1 < difficultyMode.columnCount && it + 1 in landmines) ++aroundCount
-            //bottom left
-            if (rowIndex + 1 < difficultyMode.rowCount && columnIndex > 0 && it + difficultyMode.columnCount - 1 in landmines) ++aroundCount
-            //bottom
-            if (rowIndex + 1 < difficultyMode.rowCount && it + difficultyMode.columnCount in landmines) ++aroundCount
-            //bottom right
-            if (rowIndex + 1 < difficultyMode.rowCount && columnIndex + 1 < difficultyMode.columnCount && it + difficultyMode.columnCount + 1 in landmines) ++aroundCount
-            Grid(index = it, isLandmine = it in landmines, landCountAround = aroundCount)
+        return (0 until difficultyMode.rowCount * difficultyMode.columnCount).map { index ->
+            Grid(index = index, isLandmine = index in landmines, landCountAround = aroundIndexes(index).count { it in landmines })
         }
     }
 
@@ -83,49 +64,7 @@ class MainViewModel(val difficultyMode: DifficultyMode) : ViewModel() {
     }
 
     fun findClickableGrids(index: Int): List<Int> {
-        val rowIndex = index / difficultyMode.columnCount
-        val columnIndex = index % difficultyMode.columnCount
-        val list = mutableListOf<Grid>()
-        //top left
-        if (rowIndex > 0 && columnIndex > 0) {
-            val currentIndex = index - difficultyMode.columnCount - 1
-            list.add(grids.value!![currentIndex])
-        }
-        //top
-        if (rowIndex > 0) {
-            val currentIndex = index - difficultyMode.columnCount
-            list.add(grids.value!![currentIndex])
-        }
-        //top right
-        if (rowIndex > 0 && columnIndex + 1 < difficultyMode.columnCount) {
-            val currentIndex = index - difficultyMode.columnCount + 1
-            list.add(grids.value!![currentIndex])
-        }
-        //left
-        if (columnIndex > 0) {
-            val currentIndex = index - 1
-            list.add(grids.value!![currentIndex])
-        }
-        //right
-        if (columnIndex + 1 < difficultyMode.columnCount) {
-            val currentIndex = index + 1
-            list.add(grids.value!![currentIndex])
-        }
-        //bottom left
-        if (rowIndex + 1 < difficultyMode.rowCount && columnIndex > 0) {
-            val currentIndex = index + difficultyMode.columnCount - 1
-            list.add(grids.value!![currentIndex])
-        }
-        //bottom
-        if (rowIndex + 1 < difficultyMode.rowCount) {
-            val currentIndex = index + difficultyMode.columnCount
-            list.add(grids.value!![currentIndex])
-        }
-        //bottom right
-        if (rowIndex + 1 < difficultyMode.rowCount && columnIndex + 1 < difficultyMode.columnCount) {
-            val currentIndex = index + difficultyMode.columnCount + 1
-            list.add(grids.value!![currentIndex])
-        }
+        val list = grids.value!!.filter { it.index in aroundIndexes(index) }
         if (list.count { it.status == GridStatus.FLAG } == grids.value!![index].landCountAround) {
             return list.filter { it.status == GridStatus.NORMAL }.map { it.index }
         }
@@ -138,48 +77,32 @@ class MainViewModel(val difficultyMode: DifficultyMode) : ViewModel() {
         if (grids.value!![index].landCountAround != 0) {
             return
         }
+        aroundIndexes(index).forEach {
+            if (grids.value!![it].status == GridStatus.NORMAL) autoScan(it)
+        }
+    }
+
+    private fun aroundIndexes(index: Int): List<Int> {
+        val list = mutableListOf<Int>()
         val rowIndex = index / difficultyMode.columnCount
         val columnIndex = index % difficultyMode.columnCount
         //top left
-        if (rowIndex > 0 && columnIndex > 0) {
-            val currentIndex = index - difficultyMode.columnCount - 1
-            if (grids.value!![currentIndex].status == GridStatus.NORMAL) autoScan(currentIndex)
-        }
+        if (rowIndex > 0 && columnIndex > 0) list.add(index - difficultyMode.columnCount - 1 )
         //top
-        if (rowIndex > 0) {
-            val currentIndex = index - difficultyMode.columnCount
-            if (grids.value!![currentIndex].status == GridStatus.NORMAL) autoScan(currentIndex)
-        }
+        if (rowIndex > 0) list.add(index - difficultyMode.columnCount)
         //top right
-        if (rowIndex > 0 && columnIndex + 1 < difficultyMode.columnCount) {
-            val currentIndex = index - difficultyMode.columnCount + 1
-            if (grids.value!![currentIndex].status == GridStatus.NORMAL) autoScan(currentIndex)
-        }
+        if (rowIndex > 0 && columnIndex + 1 < difficultyMode.columnCount) list.add(index - difficultyMode.columnCount + 1 )
         //left
-        if (columnIndex > 0) {
-            val currentIndex = index - 1
-            if (grids.value!![currentIndex].status == GridStatus.NORMAL) autoScan(currentIndex)
-        }
+        if (columnIndex > 0) list.add(index - 1)
         //right
-        if (columnIndex + 1 < difficultyMode.columnCount) {
-            val currentIndex = index + 1
-            if (grids.value!![currentIndex].status == GridStatus.NORMAL) autoScan(currentIndex)
-        }
+        if (columnIndex + 1 < difficultyMode.columnCount) list.add(index + 1)
         //bottom left
-        if (rowIndex + 1 < difficultyMode.rowCount && columnIndex > 0) {
-            val currentIndex = index + difficultyMode.columnCount - 1
-            if (grids.value!![currentIndex].status == GridStatus.NORMAL) autoScan(currentIndex)
-        }
+        if (rowIndex + 1 < difficultyMode.rowCount && columnIndex > 0) list.add(index + difficultyMode.columnCount - 1)
         //bottom
-        if (rowIndex + 1 < difficultyMode.rowCount) {
-            val currentIndex = index + difficultyMode.columnCount
-            if (grids.value!![currentIndex].status == GridStatus.NORMAL) autoScan(currentIndex)
-        }
+        if (rowIndex + 1 < difficultyMode.rowCount) list.add(index + difficultyMode.columnCount)
         //bottom right
-        if (rowIndex + 1 < difficultyMode.rowCount && columnIndex + 1 < difficultyMode.columnCount) {
-            val currentIndex = index + difficultyMode.columnCount + 1
-            if (grids.value!![currentIndex].status == GridStatus.NORMAL) autoScan(currentIndex)
-        }
+        if (rowIndex + 1 < difficultyMode.rowCount && columnIndex + 1 < difficultyMode.columnCount) list.add(index + difficultyMode.columnCount + 1 )
+        return list
     }
 
 }
