@@ -82,6 +82,56 @@ class MainViewModel(val difficultyMode: DifficultyMode) : ViewModel() {
             }
     }
 
+    fun findClickableGrids(index: Int): List<Int> {
+        val rowIndex = index / difficultyMode.columnCount
+        val columnIndex = index % difficultyMode.columnCount
+        val list = mutableListOf<Grid>()
+        //top left
+        if (rowIndex > 0 && columnIndex > 0) {
+            val currentIndex = index - difficultyMode.columnCount - 1
+            list.add(grids.value!![currentIndex])
+        }
+        //top
+        if (rowIndex > 0) {
+            val currentIndex = index - difficultyMode.columnCount
+            list.add(grids.value!![currentIndex])
+        }
+        //top right
+        if (rowIndex > 0 && columnIndex + 1 < difficultyMode.columnCount) {
+            val currentIndex = index - difficultyMode.columnCount + 1
+            list.add(grids.value!![currentIndex])
+        }
+        //left
+        if (columnIndex > 0) {
+            val currentIndex = index - 1
+            list.add(grids.value!![currentIndex])
+        }
+        //right
+        if (columnIndex + 1 < difficultyMode.columnCount) {
+            val currentIndex = index + 1
+            list.add(grids.value!![currentIndex])
+        }
+        //bottom left
+        if (rowIndex + 1 < difficultyMode.rowCount && columnIndex > 0) {
+            val currentIndex = index + difficultyMode.columnCount - 1
+            list.add(grids.value!![currentIndex])
+        }
+        //bottom
+        if (rowIndex + 1 < difficultyMode.rowCount) {
+            val currentIndex = index + difficultyMode.columnCount
+            list.add(grids.value!![currentIndex])
+        }
+        //bottom right
+        if (rowIndex + 1 < difficultyMode.rowCount && columnIndex + 1 < difficultyMode.columnCount) {
+            val currentIndex = index + difficultyMode.columnCount + 1
+            list.add(grids.value!![currentIndex])
+        }
+        if (list.count { it.status == GridStatus.FLAG } == grids.value!![index].landCountAround) {
+            return list.filter { it.status == GridStatus.NORMAL }.map { it.index }
+        }
+        return emptyList()
+    }
+
     //可能是这个小游戏最有意思的一个方法了
     private fun autoScan(index: Int) {
         confirmOne(index)

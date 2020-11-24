@@ -1,7 +1,9 @@
 package com.he.minesweeper
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -32,6 +34,16 @@ class MainActivity : AppCompatActivity() {
     })
 
     private val adapter = GridAdapter({ index ->
+        onClick(index)
+    }, { index ->
+        dialog.index = index
+        dialog.show(supportFragmentManager, "operate")
+    }, { index ->
+        viewModel.findClickableGrids(index).forEach { onClick(it) }
+        onClick(index)
+    })
+
+    private fun onClick(index: Int) {
         if (viewModel.grids.value!![index].isLandmine) {
             AlertDialog.Builder(this)
                 .setMessage("祝你下次好运")
@@ -46,10 +58,7 @@ class MainActivity : AppCompatActivity() {
                 .show()
         }
         viewModel.confirm(index)
-    }, { index ->
-        dialog.index = index
-        dialog.show(supportFragmentManager, "operate")
-    })
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
