@@ -14,13 +14,17 @@ class MainViewModel(val difficultyMode: DifficultyMode) : ViewModel() {
             landmines.add(Random.nextInt(difficultyMode.rowCount * difficultyMode.columnCount))
         } while (landmines.size < difficultyMode.landmineCount)
         return (0 until difficultyMode.rowCount * difficultyMode.columnCount).map { index ->
-            Grid(index = index, isLandmine = index in landmines, landCountAround = aroundIndexes(index).count { it in landmines })
+            Grid(
+                index = index,
+                isLandmine = index in landmines,
+                landCountAround = aroundIndexes(index).count { it in landmines })
         }
     }
 
-    val success get() = grids.value!!.count {
-        !it.isLandmine && it.status == GridStatus.CONFIRM
-    } == difficultyMode.columnCount * difficultyMode.rowCount - difficultyMode.landmineCount
+    val success
+        get() = grids.value!!.count {
+            !it.isLandmine && it.status == GridStatus.CONFIRM
+        } == difficultyMode.columnCount * difficultyMode.rowCount - difficultyMode.landmineCount
 
     fun reset() {
         grids.value = generateGrids()
@@ -87,11 +91,11 @@ class MainViewModel(val difficultyMode: DifficultyMode) : ViewModel() {
         val rowIndex = index / difficultyMode.columnCount
         val columnIndex = index % difficultyMode.columnCount
         //top left
-        if (rowIndex > 0 && columnIndex > 0) list.add(index - difficultyMode.columnCount - 1 )
+        if (rowIndex > 0 && columnIndex > 0) list.add(index - difficultyMode.columnCount - 1)
         //top
         if (rowIndex > 0) list.add(index - difficultyMode.columnCount)
         //top right
-        if (rowIndex > 0 && columnIndex + 1 < difficultyMode.columnCount) list.add(index - difficultyMode.columnCount + 1 )
+        if (rowIndex > 0 && columnIndex + 1 < difficultyMode.columnCount) list.add(index - difficultyMode.columnCount + 1)
         //left
         if (columnIndex > 0) list.add(index - 1)
         //right
@@ -101,7 +105,8 @@ class MainViewModel(val difficultyMode: DifficultyMode) : ViewModel() {
         //bottom
         if (rowIndex + 1 < difficultyMode.rowCount) list.add(index + difficultyMode.columnCount)
         //bottom right
-        if (rowIndex + 1 < difficultyMode.rowCount && columnIndex + 1 < difficultyMode.columnCount) list.add(index + difficultyMode.columnCount + 1 )
+        if (rowIndex + 1 < difficultyMode.rowCount && columnIndex + 1 < difficultyMode.columnCount)
+            list.add(index + difficultyMode.columnCount + 1)
         return list
     }
 
