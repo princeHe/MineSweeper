@@ -40,7 +40,6 @@ class MainActivity : AppCompatActivity() {
         dialog.show(supportFragmentManager, "operate")
     }, { index ->
         viewModel.findClickableGrids(index).forEach { onClick(it) }
-        onClick(index)
     })
 
     private fun onClick(index: Int) {
